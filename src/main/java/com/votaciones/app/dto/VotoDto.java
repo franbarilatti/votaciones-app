@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class votoDto {
+public class VotoDto {
 
     @NotNull
     private Long candidatoId;

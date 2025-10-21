@@ -9,6 +9,6 @@ public interface VotoService {
     Voto registerVote(Long candidatoId);
     long countVotesByCandidato(Long partidoId);
     long countVotesByPartido(Long partidoId);
-    List<Object[]> votosPorPartido();
+    List<Object[]> votesForPartido();
 
 }
