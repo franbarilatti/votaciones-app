@@ -23,4 +23,8 @@ public class PartidoPolitico {
     @Column(nullable = false, unique = true, length = 10)
     private String sigla;
 
+    public PartidoPolitico(String nombre, String sigla) {
+        this.nombre = nombre;
+        this.sigla = sigla;
+    }
 }

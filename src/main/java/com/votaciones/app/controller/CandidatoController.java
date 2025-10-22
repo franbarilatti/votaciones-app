@@ -31,7 +31,7 @@ public class CandidatoController {
     public ResponseEntity<Candidato> create(@Valid @RequestBody CandidatoDto dto){
         PartidoPolitico partidoPolitico = partidoPoliticoService.findById(dto.getPartidoId());
         Candidato candidato = new Candidato();
-        candidato.setNombre(dto.getNombreCompleto());
+        candidato.setNombreCompleto(dto.getNombreCompleto());
         candidato.setPartido(partidoPolitico);
         return ResponseEntity.status(201).body(candidatoService.create(candidato));
     }

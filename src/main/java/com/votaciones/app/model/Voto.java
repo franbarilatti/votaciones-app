@@ -26,6 +26,11 @@ public class Voto {
     @Column(name = "fecha_emision", nullable = false)
     private LocalDateTime fechaEmision;
 
+    public Voto(Candidato candidato, LocalDateTime fechaEmision) {
+        this.candidato = candidato;
+        this.fechaEmision = fechaEmision;
+    }
+
     public void prePersist(){
         if (fechaEmision == null){
             fechaEmision = LocalDateTime.now();

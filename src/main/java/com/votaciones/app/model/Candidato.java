@@ -17,12 +17,14 @@ public class Candidato {
     public Long id;
 
     @Column(nullable = false)
-    private String nombre;
+    private String nombreCompleto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "partido_id", nullable = false)
     private PartidoPolitico partido;
 
-
-
+    public Candidato(String nombre, PartidoPolitico partido) {
+        this.nombreCompleto = nombre;
+        this.partido = partido;
+    }
 }
