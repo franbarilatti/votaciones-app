@@ -1,5 +1,6 @@
 package com.votaciones.app.service;
 
+import com.votaciones.app.exception.ResourceNotFoundException;
 import com.votaciones.app.model.Candidato;
 import com.votaciones.app.repository.CandidatoRepository;
 import com.votaciones.app.repository.PartidoPoliticoRepository;
