@@ -1,0 +1,197 @@
+{
+  "info": {
+    "name": "Votaciones API",
+    "_postman_id": "12345678-abcd-ef00-1234-56789abcdef0",
+    "description": "Colección de pruebas para la API de Gestión de Votaciones",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Partidos Políticos",
+      "item": [
+        {
+          "name": "Listar Partidos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/partidos",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "partidos"]
+            }
+          }
+        },
+        {
+          "name": "Crear Partido",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Lado Oscuro\",\n  \"sigla\": \"LO\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/partidos",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "partidos"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Partido por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/partidos/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "partidos", "1"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Partido",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/partidos/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "partidos", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Candidatos",
+      "item": [
+        {
+          "name": "Listar Candidatos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/candidatos",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "candidatos"]
+            }
+          }
+        },
+        {
+          "name": "Crear Candidato",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombreCompleto\": \"Juan Pérez\",\n  \"partidoId\": 1\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/candidatos",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "candidatos"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Candidato por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/candidatos/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "candidatos", "1"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Candidato",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/candidatos/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "candidatos", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Votos",
+      "item": [
+        {
+          "name": "Registrar Voto",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"candidatoId\": 1\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/votos",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "votos"]
+            }
+          }
+        },
+        {
+          "name": "Total de votos por Candidato",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/votos/por-candidato",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "votos", "por-candidato"]
+            }
+          }
+        },
+        {
+          "name": "Total de votos por Partido",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/votos/por-partido",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "votos", "por-partido"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
