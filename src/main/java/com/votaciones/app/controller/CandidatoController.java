@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/candidatos")
@@ -28,24 +29,55 @@ public class CandidatoController {
 
     @Operation(summary = "Crear Candidato")
     @PostMapping
-    public ResponseEntity<Candidato> create(@Valid @RequestBody CandidatoDto dto){
+    public ResponseEntity<CandidatoDto> create(@Valid @RequestBody CandidatoDto dto){
         PartidoPolitico partidoPolitico = partidoPoliticoService.findById(dto.getPartidoId());
         Candidato candidato = new Candidato();
         candidato.setNombreCompleto(dto.getNombreCompleto());
         candidato.setPartido(partidoPolitico);
-        return ResponseEntity.status(201).body(candidatoService.create(candidato));
+
+        Candidato creado = candidatoService.create(candidato);
+
+        CandidatoDto resp = new CandidatoDto();
+        resp.setId(creado.getId());
+        resp.setNombreCompleto(creado.getNombreCompleto());
+        resp.setPartidoNombre(partidoPolitico.getNombre());
+        resp.setPartidoSigla(partidoPolitico.getSigla());
+
+        return ResponseEntity.status(201).body(resp);
     }
 
     @Operation(summary = "Listar Candidatos")
     @GetMapping
-    public ResponseEntity<List<Candidato>> findAll(){
-        return ResponseEntity.ok(candidatoService.findAll());
+    public ResponseEntity<List<CandidatoDto>> findAll(){
+        List<Candidato> candidatos = candidatoService.findAll();
+
+        List<CandidatoDto> dtos = candidatos.stream().map(c -> {
+            CandidatoDto dto = new CandidatoDto();
+            dto.setId(c.getId());
+            dto.setNombreCompleto(c.getNombreCompleto());
+            if(c.getPartido() != null){
+                dto.setPartidoNombre(c.getPartido().getNombre());
+                dto.setPartidoSigla(c.getPartido().getSigla());
+            }
+            return dto;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
     }
 
     @Operation(summary = "Obtener candidato por ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Candidato> findById(@PathVariable Long id){
-        return ResponseEntity.ok(candidatoService.findById(id));
+    public ResponseEntity<CandidatoDto> findById(@PathVariable Long id){
+        Candidato candidato = candidatoService.findById(id);
+
+        CandidatoDto resp = new CandidatoDto();
+        resp.setId(candidato.getId());
+        resp.setNombreCompleto(candidato.getNombreCompleto());
+        resp.setPartidoNombre(candidato.getPartido().getNombre());
+        resp.setPartidoSigla(candidato.getPartido().getSigla());
+
+
+        return ResponseEntity.ok(resp);
     }
 
     @Operation(summary = "Eliminar Candidato")
