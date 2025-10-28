@@ -24,38 +24,6 @@ API REST desarrollada en **Java y Spring Boot** para gestionar un sistema de vot
 
 ---
 
-## 🏗️ Diagrama de entidades
-
-PartidoPolitico
-┌─────────┐
-│ id │
-│ nombre │
-│ sigla │
-└─────────┘
-▲
-│ 1..*
-Candidato
-┌─────────────┐
-│ id │
-│ nombre │
-│ partido_id │
-└─────────────┘
-▲
-│ 1..*
-Voto
-┌─────────────┐
-│ id │
-│ candidato_id│
-│ fecha_emision│
-└─────────────┘
-
-yaml
-Copiar código
-
-> Un partido puede tener muchos candidatos, y un candidato puede recibir muchos votos.
-
----
-
 ## 🚀 Endpoints disponibles
 
 ### Partidos Políticos
