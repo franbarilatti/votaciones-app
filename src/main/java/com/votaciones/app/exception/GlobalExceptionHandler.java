@@ -2,7 +2,6 @@ package com.votaciones.app.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,43 +13,51 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private static final String TIMESTAMP = "timestamp";
+    private static final String STATUS = "status";
+    private static final String ERROR = "error";
+    private static final String MESSAGE = "message";
+    private static final String PATH = "path";
+    private static final String BAD_REQUEST = "Bad Request";
+    private static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
+    private static final String RESOURCE_NOT_FOUND = "Resource Not Found";
+
     @ExceptionHandler
-    public ResponseEntity<?> handleResourceNotFound(ResourceNotFoundException ex){
+    public ResponseEntity<Map<String, Object>> handleResourceNotFound(ResourceNotFoundException ex){
         Map<String, Object> error = new HashMap<>();
-        error.put("timestamp", LocalDateTime.now());
-        error.put("status", HttpStatus.NOT_FOUND.value());
-        error.put("error", "Resource Not Found");
-        error.put("message", ex.getMessage());
+        error.put(TIMESTAMP, LocalDateTime.now());
+        error.put(STATUS, HttpStatus.NOT_FOUND.value());
+        error.put(ERROR, RESOURCE_NOT_FOUND);
+        error.put(MESSAGE, ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler
-    public ResponseEntity<?> handlerBadRequest(BadRequestException ex){
+    public ResponseEntity<Map<String, Object>> handlerBadRequest(BadRequestException ex){
         Map<String, Object> error = new HashMap<>();
-        error.put("timestamp", LocalDateTime.now());
-        error.put("status", HttpStatus.BAD_REQUEST.value());
-        error.put("error", "Bad Request");
-        error.put("message", ex.getMessage());
+        error.put(TIMESTAMP, LocalDateTime.now());
+        error.put(STATUS, HttpStatus.BAD_REQUEST.value());
+        error.put(ERROR, BAD_REQUEST);
+        error.put(MESSAGE, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleGeneralException(Exception ex){
+    public ResponseEntity<Map<String, Object>> handleGeneralException(Exception ex){
         Map<String, Object> error = new HashMap<>();
-        error.put("timestamp", LocalDateTime.now());
-        error.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        error.put("error", "Internal Server Error");
-        error.put("message", ex.getMessage());
+        error.put(TIMESTAMP, LocalDateTime.now());
+        error.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        error.put(ERROR, INTERNAL_SERVER_ERROR);
+        error.put(MESSAGE, ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
 
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, WebRequest request){
         List<Map<String,String>> fieldError = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -58,17 +65,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                     Map<String, String> m = new HashMap<>();
                     m.put("field", fe.getField());
                     m.put("rejectedValue", String.valueOf(fe.getRejectedValue()));
-                    m.put("message", fe.getDefaultMessage());
+                    m.put(MESSAGE, fe.getDefaultMessage());
                     return m;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "Bad Request");
-        body.put("message", "Validation failed");
-        body.put("path", request.getDescription(false).replace("uri=", ""));
+        body.put(TIMESTAMP, LocalDateTime.now());
+        body.put(STATUS, HttpStatus.BAD_REQUEST.value());
+        body.put(ERROR, BAD_REQUEST);
+        body.put(MESSAGE, "Validation failed");
+        body.put(PATH, request.getDescription(false).replace("uri=", ""));
         body.put("fieldErrors", fieldError);
 
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
@@ -84,16 +91,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                     if(v.getPropertyPath() != null) path = v.getPropertyPath().toString();
                     m.put("property", path);
                     m.put("invalidValue", String.valueOf(v.getInvalidValue()));
-                    m.put("message", v.getMessage());
+                    m.put(MESSAGE, v.getMessage());
                     return m;
-                }).collect(Collectors.toList());
+                }).toList();
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "Bad Request");
-        body.put("message", "Parameter validation failed");
-        body.put("path", request.getRequestURI());
+        body.put(TIMESTAMP, LocalDateTime.now());
+        body.put(STATUS, HttpStatus.BAD_REQUEST.value());
+        body.put(ERROR, BAD_REQUEST);
+        body.put(MESSAGE, "Parameter validation failed");
+        body.put(PATH, request.getRequestURI());
         body.put("violations", violations);
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
@@ -101,14 +108,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, WebRequest request){
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "Bad Request");
-        body.put("message", "Malformed JSON request" + Optional.ofNullable(ex.getMostSpecificCause()).map(Throwable::getMessage).orElse(ex.getMessage()));
-        body.put("path", request.getDescription(false).replace("uri", ""));
+        body.put(TIMESTAMP, LocalDateTime.now());
+        body.put(STATUS, HttpStatus.BAD_REQUEST.value());
+        body.put(ERROR, BAD_REQUEST);
+        body.put(MESSAGE, "Malformed JSON request" + Optional.ofNullable(ex.getMostSpecificCause()).map(Throwable::getMessage).orElse(ex.getMessage()));
+        body.put(PATH, request.getDescription(false).replace("uri", ""));
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
 
 

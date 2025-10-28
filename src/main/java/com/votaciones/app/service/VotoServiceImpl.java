@@ -8,7 +8,6 @@ import com.votaciones.app.repository.VotoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class VotoServiceImpl implements VotoService{

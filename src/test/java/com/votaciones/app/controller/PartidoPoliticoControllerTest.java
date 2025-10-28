@@ -6,8 +6,8 @@ import com.votaciones.app.service.PartidoPoliticoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -18,12 +18,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PartidoPoliticoController.class)
-public class PartidoPoliticoControllerTest {
+class PartidoPoliticoControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private PartidoPoliticoService service;
 
     @Autowired
@@ -36,7 +36,6 @@ public class PartidoPoliticoControllerTest {
 
         when(service.create(any(PartidoPolitico.class))).thenReturn(p);
 
-        String body = objectMapper.writeValueAsString(p);
         mockMvc.perform(post("/api/partidos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nombre\":\"Demo\",\"sigla\":\"DM\"}"))

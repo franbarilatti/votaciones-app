@@ -3,7 +3,6 @@ package com.votaciones.app.service;
 import com.votaciones.app.exception.ResourceNotFoundException;
 import com.votaciones.app.model.Candidato;
 import com.votaciones.app.repository.CandidatoRepository;
-import com.votaciones.app.repository.PartidoPoliticoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +11,9 @@ import java.util.List;
 public class CandidatoServiceImpl implements CandidatoService{
 
     private final CandidatoRepository candidatoRepository;
-    private final PartidoPoliticoRepository partidoPoliticoRepository;
 
-    public CandidatoServiceImpl(CandidatoRepository candidatoRepository, PartidoPoliticoRepository partidoPoliticoRepository) {
+    public CandidatoServiceImpl(CandidatoRepository candidatoRepository) {
         this.candidatoRepository = candidatoRepository;
-        this.partidoPoliticoRepository = partidoPoliticoRepository;
     }
 
     @Override

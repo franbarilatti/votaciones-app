@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/candidatos")
@@ -60,7 +59,7 @@ public class CandidatoController {
                 dto.setPartidoSigla(c.getPartido().getSigla());
             }
             return dto;
-        }).collect(Collectors.toList());
+        }).toList();
 
         return ResponseEntity.ok(dtos);
     }
